@@ -1,0 +1,40 @@
+{
+  "c_grid": [
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "embeddings": "data/processed/image_baseline/embeddings_efficientnet_b0_384x192.npz",
+  "feature_sets": {
+    "image_embedding_plus_age_sex": {
+      "metadata_columns": [
+        "age",
+        "gender"
+      ],
+      "sensitivity_label": "allowed metadata sensitivity"
+    },
+    "image_embedding_plus_downstream_age_sex_upper_bound": {
+      "metadata_columns": [
+        "age",
+        "gender",
+        "number_of_missing_teeth",
+        "implant",
+        "residual_root",
+        "functional_tooth_logarithm"
+      ],
+      "sensitivity_label": "non-deployment downstream upper-bound sensitivity"
+    }
+  },
+  "folds_run": 15,
+  "forbidden_columns": [
+    "bl_mm",
+    "bl_rl_ratio",
+    "bone_resorption",
+    "bone_resorption_age",
+    "brar",
+    "max_bl_rl_ratio",
+    "rl_mm"
+  ],
+  "prediction_rows": 11856
+}

@@ -1,0 +1,14 @@
+{
+  "aggregation_for_classifier": "concatenated mean and max tile embeddings",
+  "device": "mps",
+  "encoder": "efficientnet_b0",
+  "features_shape": [
+    988,
+    4,
+    1280
+  ],
+  "preprocessing": "RGB conversion, resize to tile height, fixed overlapping horizontal square tiles, ImageNet normalization",
+  "tile_count": 4,
+  "tile_size": 384,
+  "weights": "EfficientNet_B0_Weights.IMAGENET1K_V1"
+}

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BRAR Embedding Sensitivity Report</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 24px; color: #202124; }
+    main { max-width: 1100px; margin: 0 auto; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 13px; }
+    th, td { border-bottom: 1px solid #d7dce2; padding: 7px 8px; text-align: left; }
+    th { background: #eef1f4; }
+    .note { border-left: 4px solid #795548; background: #f8f5f2; padding: 12px 14px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>BRAR Embedding Sensitivity Report</h1>
+  <p class="note">These are sensitivity models using cached EfficientNet-B0 embeddings. The downstream-status model is an upper-bound analysis, not a deployment-ready predictor.</p>
+  <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>feature_set</th>
+      <th>probability_mode</th>
+      <th>folds</th>
+      <th>macro_f1_mean</th>
+      <th>balanced_accuracy_mean</th>
+      <th>accuracy_mean</th>
+      <th>log_loss_mean</th>
+      <th>ece_10_mean</th>
+      <th>ovr_auroc_mean</th>
+      <th>quadratic_weighted_kappa_mean</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>image_embedding_plus_age_sex</td>
+      <td>raw</td>
+      <td>15</td>
+      <td>0.49813885</td>
+      <td>0.50815856</td>
+      <td>0.53338803</td>
+      <td>1.35251587</td>
+      <td>0.21914938</td>
+      <td>0.68644694</td>
+      <td>0.35195671</td>
+    </tr>
+    <tr>
+      <td>image_embedding_plus_downstream_age_sex_upper_bound</td>
+      <td>raw</td>
+      <td>15</td>
+      <td>0.49422490</td>
+      <td>0.50474664</td>
+      <td>0.52832043</td>
+      <td>1.37584057</td>
+      <td>0.22520452</td>
+      <td>0.68530750</td>
+      <td>0.35141747</td>
+    </tr>
+    <tr>
+      <td>image_embedding_plus_age_sex</td>
+      <td>temperature_scaled</td>
+      <td>15</td>
+      <td>0.49813885</td>
+      <td>0.50815856</td>
+      <td>0.53338803</td>
+      <td>0.94799654</td>
+      <td>0.08011734</td>
+      <td>0.68898125</td>
+      <td>0.35195671</td>
+    </tr>
+    <tr>
+      <td>image_embedding_plus_downstream_age_sex_upper_bound</td>
+      <td>temperature_scaled</td>
+      <td>15</td>
+      <td>0.49422490</td>
+      <td>0.50474664</td>
+      <td>0.52832043</td>
+      <td>0.94992554</td>
+      <td>0.07429080</td>
+      <td>0.68803933</td>
+      <td>0.35141747</td>
+    </tr>
+  </tbody>
+</table>
+</main>
+</body>
+</html>

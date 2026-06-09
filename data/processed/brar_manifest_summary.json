@@ -1,0 +1,42 @@
+{
+  "duplicate_exact_image_hashes": {},
+  "duplicate_metadata_names": [],
+  "image_files": 988,
+  "level_counts": {
+    "1": 170,
+    "2": 560,
+    "3": 258
+  },
+  "linkage_status_counts": {
+    "PASS": 988
+  },
+  "manifest_rows": 988,
+  "metadata_rows": 988,
+  "missing_images": [],
+  "readability_status_counts": {
+    "PASS": 988
+  },
+  "top_dimensions": {
+    "2457x1316": 1,
+    "2459x1316": 3,
+    "2775x1480": 52,
+    "2781x1316": 2,
+    "2783x1316": 2,
+    "2784x1316": 3,
+    "2785x1316": 14,
+    "2786x1316": 110,
+    "2787x1316": 51,
+    "2788x1316": 2,
+    "2789x1316": 5,
+    "2790x1316": 8,
+    "2791x1316": 6,
+    "2792x1316": 2,
+    "2793x1316": 14,
+    "2794x1316": 30,
+    "2795x1316": 309,
+    "2796x1316": 222,
+    "2797x1316": 5,
+    "2976x1536": 143
+  },
+  "unlinked_images": []
+}

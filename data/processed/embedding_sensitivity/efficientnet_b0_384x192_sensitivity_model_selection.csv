@@ -1,0 +1,31 @@
+repeat,seed,fold,feature_set,sensitivity_label,selected_c,validation_macro_f1,validation_balanced_accuracy,validation_log_loss
+1,20260606,0,image_embedding_plus_age_sex,allowed metadata sensitivity,0.10000000,0.48977711,0.48238526,1.39749932
+1,20260606,1,image_embedding_plus_age_sex,allowed metadata sensitivity,10.00000000,0.53308988,0.53747845,2.44716287
+1,20260606,2,image_embedding_plus_age_sex,allowed metadata sensitivity,0.01000000,0.57812123,0.59780579,1.02887166
+1,20260606,3,image_embedding_plus_age_sex,allowed metadata sensitivity,0.10000000,0.51644802,0.52591036,1.43183732
+1,20260606,4,image_embedding_plus_age_sex,allowed metadata sensitivity,0.01000000,0.51744277,0.51824768,0.94578904
+2,20260607,0,image_embedding_plus_age_sex,allowed metadata sensitivity,0.01000000,0.48294372,0.48062109,1.06936741
+2,20260607,1,image_embedding_plus_age_sex,allowed metadata sensitivity,0.01000000,0.47182996,0.47470911,1.04871225
+2,20260607,2,image_embedding_plus_age_sex,allowed metadata sensitivity,0.10000000,0.51453072,0.52205882,1.27682638
+2,20260607,3,image_embedding_plus_age_sex,allowed metadata sensitivity,0.01000000,0.55947444,0.59447946,0.99026895
+2,20260607,4,image_embedding_plus_age_sex,allowed metadata sensitivity,0.10000000,0.45610043,0.45891241,1.43492079
+3,20260608,0,image_embedding_plus_age_sex,allowed metadata sensitivity,1.00000000,0.41074537,0.41080855,2.24401903
+3,20260608,1,image_embedding_plus_age_sex,allowed metadata sensitivity,0.01000000,0.54353584,0.55784044,0.87363285
+3,20260608,2,image_embedding_plus_age_sex,allowed metadata sensitivity,0.01000000,0.50605757,0.50957049,1.10584962
+3,20260608,3,image_embedding_plus_age_sex,allowed metadata sensitivity,0.01000000,0.47350430,0.47245565,1.06160426
+3,20260608,4,image_embedding_plus_age_sex,allowed metadata sensitivity,0.10000000,0.57174427,0.57230392,1.18585002
+1,20260606,0,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.51077848,0.51354773,0.97652572
+1,20260606,1,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,1.00000000,0.51158964,0.51183743,1.83874142
+1,20260606,2,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.57812123,0.59780579,1.03323889
+1,20260606,3,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.51128602,0.52678571,1.00635719
+1,20260606,4,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,10.00000000,0.52907360,0.52759373,2.66502500
+2,20260607,0,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.48894777,0.48703135,1.06693780
+2,20260607,1,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.46798799,0.47173292,1.04887819
+2,20260607,2,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.10000000,0.51036943,0.51908263,1.29084098
+2,20260607,3,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.56085007,0.59447946,0.98787165
+2,20260607,4,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.10000000,0.44995829,0.45250215,1.44149590
+3,20260608,0,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,1.00000000,0.41734336,0.41676094,2.23381448
+3,20260608,1,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.54353584,0.55784044,0.87353271
+3,20260608,2,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.50823617,0.51313025,1.10631645
+3,20260608,3,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.01000000,0.48879071,0.48494398,1.06112206
+3,20260608,4,image_embedding_plus_downstream_age_sex_upper_bound,non-deployment downstream upper-bound sensitivity,0.10000000,0.57174427,0.57230392,1.18215501

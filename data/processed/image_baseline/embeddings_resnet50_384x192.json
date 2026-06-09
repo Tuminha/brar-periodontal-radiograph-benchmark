@@ -1,0 +1,12 @@
+{
+  "device": "mps",
+  "encoder": "resnet50",
+  "features_shape": [
+    988,
+    2048
+  ],
+  "image_height": 192,
+  "image_width": 384,
+  "preprocessing": "RGB conversion, aspect-fit black padding, ImageNet normalization",
+  "weights": "ResNet50_Weights.IMAGENET1K_V2"
+}

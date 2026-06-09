@@ -1,0 +1,31 @@
+# Local Python/runtime artifacts
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# macOS/editor noise
+.DS_Store
+*.swp
+*.swo
+
+# Raw public dataset and extracted radiographs are regenerated/downloaded, not committed.
+data/raw/
+data/extracted/
+
+# Large derived arrays/model artifacts. CSV predictions and reports stay trackable.
+*.npz
+*.npy
+*.pt
+*.pth
+*.pkl
+*.joblib
+
+# Runtime logs and generated visual contact sheets with embedded radiographs.
+logs/
+reports/error_audit_contact_sheets/
+
+# Local-only planning, submission strategy, and manuscript drafting materials.
+private_reports/

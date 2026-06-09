@@ -1,0 +1,10 @@
+relative_path,grade_folder,sips_exit_code,pixel_width,pixel_height
+data/extracted/level_1/patient_image_000001_07f48740.jpg,1,0,2976,1536
+data/extracted/level_1/patient_image_000005_89a2810f.jpg,1,0,2976,1536
+data/extracted/level_1/patient_image_000006_4aa37c68.jpg,1,0,2795,1316
+data/extracted/level_2/patient_image_000004_ba49da4c.jpg,2,0,2976,1536
+data/extracted/level_2/patient_image_000008_fdfc183f.jpg,2,0,2796,1316
+data/extracted/level_2/patient_image_000009_ea22106e.jpg,2,0,2786,1316
+data/extracted/level_3/patient_image_000002_4bb31c71.jpg,3,0,2786,1316
+data/extracted/level_3/patient_image_000003_2b2e7506.jpg,3,0,2796,1316
+data/extracted/level_3/patient_image_000007_833861b5.jpg,3,0,2775,1480

@@ -1,0 +1,17 @@
+{
+  "aggregation": "meanmax",
+  "c_grid": [
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "design_rationale": "BRAR severity is anchored to the worst tooth/site; fixed overlapping horizontal tiles test whether localized image signal is diluted by whole-panoramic pooling.",
+  "device": "mps",
+  "embeddings_path": "data/processed/image_baseline/tile_embeddings_efficientnet_b0_384_4tiles.npz",
+  "encoder": "efficientnet_b0",
+  "folds_run": 15,
+  "prediction_rows": 5928,
+  "tile_count": 4,
+  "tile_size": 384
+}

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BRAR Frozen Image Baseline Report</title>
+  <style>
+    :root {
+      --ink: #1f2933;
+      --muted: #657484;
+      --line: #d8dee6;
+      --panel: #f7f9fb;
+      --warn: #fff8ea;
+    }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: white; line-height: 1.45; }
+    main { max-width: 1180px; margin: 0 auto; padding: 32px 24px 56px; }
+    h1 { margin: 0 0 8px; font-size: 32px; line-height: 1.1; letter-spacing: 0; }
+    h2 { margin-top: 34px; padding-bottom: 8px; border-bottom: 1px solid var(--line); font-size: 22px; }
+    p { color: var(--muted); margin: 0 0 16px; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin: 20px 0; }
+    .card { border: 1px solid var(--line); border-radius: 8px; padding: 14px; background: var(--panel); }
+    .card strong { display: block; font-size: 24px; line-height: 1.1; }
+    .card span { display: block; margin-top: 6px; color: var(--muted); font-size: 13px; }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0 20px; font-size: 14px; }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: var(--panel); }
+    .warning { border: 1px solid #e4b35f; background: var(--warn); border-radius: 8px; padding: 14px 18px; }
+    .thumb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    figure { margin: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--panel); }
+    img { width: 100%; aspect-ratio: 2 / 1; object-fit: contain; display: block; background: #101820; }
+    figcaption { padding: 8px 10px 10px; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+    code { background: #eef2f6; padding: 2px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>BRAR Frozen Image Baseline Report</h1>
+  <p>Image-only frozen encoder baseline compared against non-image guardrails.</p>
+  <div class="cards"><div class="card"><strong>0.4813</strong><span>Image raw macro-F1</span></div><div class="card"><strong>-0.0037</strong><span>Delta vs age/sex</span></div><div class="card"><strong>-0.0250</strong><span>Delta vs upper bound</span></div><div class="card"><strong>15</strong><span>Folds evaluated</span></div><div class="card"><strong>resnet50</strong><span>Encoder</span></div><div class="card"><strong>does not beat age/sex</strong><span>Primary status</span></div></div>
+
+  <h2>Decision Gate</h2>
+  <p class="warning">The image-only model must beat the age/sex baseline to support a compelling image-signal claim. Raw image macro-F1 delta versus age/sex: <strong>-0.0037</strong>.</p>
+
+  <h2>Image Model Test Metrics</h2>
+  <table><thead><tr><th>Probability mode</th><th>Macro-F1</th><th>Balanced accuracy</th><th>Accuracy</th><th>Log loss</th><th>ECE</th><th>AUROC</th><th>Folds</th></tr></thead><tbody><tr><td>raw</td><td>0.4813</td><td>0.4798</td><td>0.5435</td><td>1.3375</td><td>0.2037</td><td>0.6683</td><td>15</td></tr><tr><td>temperature_scaled</td><td>0.4813</td><td>0.4798</td><td>0.5435</td><td>0.9573</td><td>0.0766</td><td>0.6707</td><td>15</td></tr></tbody></table>
+
+  <h2>Comparison Against Guardrails</h2>
+  <table><thead><tr><th>Kind</th><th>Model / feature set</th><th>Macro-F1</th><th>Balanced accuracy</th><th>Accuracy</th></tr></thead><tbody><tr><td>negative_control</td><td>multinomial_logistic / downstream_plus_age_sex</td><td>0.5063</td><td>0.5681</td><td>0.5398</td></tr><tr><td>negative_control</td><td>multinomial_logistic / age_sex</td><td>0.4850</td><td>0.5445</td><td>0.5152</td></tr><tr><td>image</td><td>raw</td><td>0.4813</td><td>0.4798</td><td>0.5435</td></tr><tr><td>image</td><td>temperature_scaled</td><td>0.4813</td><td>0.4798</td><td>0.5435</td></tr><tr><td>negative_control</td><td>multinomial_logistic / age_sex_geometry</td><td>0.4571</td><td>0.5199</td><td>0.4831</td></tr><tr><td>negative_control</td><td>multinomial_logistic / downstream_status</td><td>0.3559</td><td>0.4787</td><td>0.3532</td></tr><tr><td>negative_control</td><td>stratified_random / class_prior</td><td>0.3282</td><td>0.3294</td><td>0.4177</td></tr><tr><td>negative_control</td><td>multinomial_logistic / image_geometry_file</td><td>0.3044</td><td>0.3474</td><td>0.3528</td></tr><tr><td>negative_control</td><td>majority_class / class_prior</td><td>0.2412</td><td>0.3333</td><td>0.5668</td></tr><tr><td>negative_control</td><td>multinomial_logistic / admin_index</td><td>0.1929</td><td>0.2831</td><td>0.2129</td></tr></tbody></table>
+
+  <h2>Aggregate Test Confusion Matrix: Raw</h2>
+  <table><thead><tr><th>True label</th><th>Pred 1</th><th>Pred 2</th><th>Pred 3</th></tr></thead><tbody><tr><td>1</td><td>194</td><td>255</td><td>61</td></tr><tr><td>2</td><td>221</td><td>1108</td><td>351</td></tr><tr><td>3</td><td>71</td><td>394</td><td>309</td></tr></tbody></table>
+
+  <h2>Aggregate Test Confusion Matrix: Temperature Scaled</h2>
+  <table><thead><tr><th>True label</th><th>Pred 1</th><th>Pred 2</th><th>Pred 3</th></tr></thead><tbody><tr><td>1</td><td>194</td><td>255</td><td>61</td></tr><tr><td>2</td><td>221</td><td>1108</td><td>351</td></tr><tr><td>3</td><td>71</td><td>394</td><td>309</td></tr></tbody></table>
+
+  <h2>Reliability Bins: Raw Test Probabilities</h2>
+  <table><thead><tr><th>Confidence bin</th><th>N</th><th>Mean confidence</th><th>Accuracy</th></tr></thead><tbody><tr><td>0.0-0.1</td><td>0</td><td>0.0000</td><td>0.0000</td></tr><tr><td>0.1-0.2</td><td>0</td><td>0.0000</td><td>0.0000</td></tr><tr><td>0.2-0.3</td><td>0</td><td>0.0000</td><td>0.0000</td></tr><tr><td>0.3-0.4</td><td>40</td><td>0.3832</td><td>0.3750</td></tr><tr><td>0.4-0.5</td><td>299</td><td>0.4619</td><td>0.4247</td></tr><tr><td>0.5-0.6</td><td>470</td><td>0.5496</td><td>0.4596</td></tr><tr><td>0.6-0.7</td><td>483</td><td>0.6484</td><td>0.5631</td></tr><tr><td>0.7-0.8</td><td>475</td><td>0.7476</td><td>0.5558</td></tr><tr><td>0.8-0.9</td><td>446</td><td>0.8485</td><td>0.5516</td></tr><tr><td>0.9-1.0</td><td>751</td><td>0.9657</td><td>0.6272</td></tr></tbody></table>
+
+  <h2>High-Confidence Correct Examples: Repeat 1 Fold 0</h2>
+  <div class="thumb-grid">
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000954_3f49f532.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000954_3f49f532.jpg<br>true 3 | pred 3 | conf 0.996</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000415_fb82a215.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000415_fb82a215.jpg<br>true 2 | pred 2 | conf 0.996</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000431_fe5bebe4.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000431_fe5bebe4.jpg<br>true 2 | pred 2 | conf 0.995</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000494_fe2e35fa.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000494_fe2e35fa.jpg<br>true 2 | pred 2 | conf 0.995</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000448_fe6c87b3.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000448_fe6c87b3.jpg<br>true 2 | pred 2 | conf 0.993</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000319_070a158d.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000319_070a158d.jpg<br>true 2 | pred 2 | conf 0.991</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000416_8c0322d5.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000416_8c0322d5.jpg<br>true 2 | pred 2 | conf 0.989</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000924_f91b651d.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000924_f91b651d.jpg<br>true 2 | pred 2 | conf 0.982</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000934_34fc5702.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000934_34fc5702.jpg<br>true 3 | pred 3 | conf 0.980</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000382_934a0214.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000382_934a0214.jpg<br>true 2 | pred 2 | conf 0.978</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000485_04acf008.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000485_04acf008.jpg<br>true 2 | pred 2 | conf 0.969</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000384_d6d2deea.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000384_d6d2deea.jpg<br>true 2 | pred 2 | conf 0.963</figcaption>
+            </figure>
+            </div>
+
+  <h2>High-Confidence Incorrect Examples: Repeat 1 Fold 0</h2>
+  <div class="thumb-grid">
+            <figure>
+              <img src="../data/extracted/level_1/patient_image_000095_72dd2f18.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000095_72dd2f18.jpg<br>true 1 | pred 2 | conf 0.982</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000476_2949122a.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000476_2949122a.jpg<br>true 2 | pred 3 | conf 0.966</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000923_06d8f7f4.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000923_06d8f7f4.jpg<br>true 3 | pred 2 | conf 0.964</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000875_2bb035cf.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000875_2bb035cf.jpg<br>true 3 | pred 2 | conf 0.943</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000328_8a2d91fc.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000328_8a2d91fc.jpg<br>true 3 | pred 2 | conf 0.910</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_1/patient_image_000542_0180d986.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000542_0180d986.jpg<br>true 1 | pred 2 | conf 0.909</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000654_d7798fef.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000654_d7798fef.jpg<br>true 3 | pred 2 | conf 0.906</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000300_865c8039.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000300_865c8039.jpg<br>true 3 | pred 2 | conf 0.893</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000261_4ba3dd44.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000261_4ba3dd44.jpg<br>true 3 | pred 2 | conf 0.889</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_3/patient_image_000123_1ebadac8.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000123_1ebadac8.jpg<br>true 3 | pred 2 | conf 0.888</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000127_924013a0.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000127_924013a0.jpg<br>true 2 | pred 3 | conf 0.879</figcaption>
+            </figure>
+            
+            <figure>
+              <img src="../data/extracted/level_2/patient_image_000853_4a999514.jpg" alt="BRAR image example">
+              <figcaption>patient_image_000853_4a999514.jpg<br>true 2 | pred 3 | conf 0.876</figcaption>
+            </figure>
+            </div>
+</main>
+</body>
+</html>

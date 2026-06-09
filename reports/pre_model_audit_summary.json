@@ -1,0 +1,55 @@
+{
+  "environment": {
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "pillow": "12.2.0",
+    "platform": "macOS-26.4.1-arm64-arm-64bit",
+    "python_executable": "/Users/francisco/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "python_version": "3.12.13 (main, Mar  3 2026, 15:35:03) [Clang 21.1.4 ]",
+    "sklearn": "not available (ModuleNotFoundError)",
+    "torch": "not available (ModuleNotFoundError)",
+    "torchvision": "not available (ModuleNotFoundError)"
+  },
+  "images_fingerprinted": 988,
+  "near_duplicates": {
+    "candidate_pairs": 1226,
+    "crossing_fold_group_rows": 0,
+    "exact_sha256_pairs": 0,
+    "high_priority_pairs": 0,
+    "low_priority_pairs": 1226,
+    "medium_priority_pairs": 0,
+    "split_risk_rows": 0
+  },
+  "split_balance": {
+    "test": {
+      "age_mean_max": 42.041,
+      "age_mean_min": 39.788,
+      "aspect_ratio_mean_max": 2.0914,
+      "aspect_ratio_mean_min": 2.0772,
+      "gender_1_prop_max": 0.5354,
+      "gender_1_prop_min": 0.4467,
+      "n_max": 198,
+      "n_min": 197
+    },
+    "train": {
+      "age_mean_max": 41.024,
+      "age_mean_min": 39.946,
+      "aspect_ratio_mean_max": 2.0839,
+      "aspect_ratio_mean_min": 2.0777,
+      "gender_1_prop_max": 0.5093,
+      "gender_1_prop_min": 0.4696,
+      "n_max": 594,
+      "n_min": 592
+    },
+    "val": {
+      "age_mean_max": 42.041,
+      "age_mean_min": 39.788,
+      "aspect_ratio_mean_max": 2.0914,
+      "aspect_ratio_mean_min": 2.0772,
+      "gender_1_prop_max": 0.5354,
+      "gender_1_prop_min": 0.4467,
+      "n_max": 198,
+      "n_min": 197
+    }
+  }
+}

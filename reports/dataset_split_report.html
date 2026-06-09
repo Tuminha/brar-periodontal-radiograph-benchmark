@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BRAR Dataset And Split Report</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1f2933;
+      --muted: #657484;
+      --line: #d8dee6;
+      --panel: #f7f9fb;
+      --level1: #2a9d8f;
+      --level2: #5176b8;
+      --level3: #d66a35;
+    }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+      line-height: 1.45;
+    }
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 32px 24px 56px;
+    }
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      letter-spacing: 0;
+    }
+    h1 {
+      font-size: 32px;
+      line-height: 1.1;
+    }
+    h2 {
+      margin-top: 34px;
+      font-size: 22px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 8px;
+    }
+    h3 {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+    p {
+      color: var(--muted);
+      margin: 0 0 16px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: var(--panel);
+    }
+    .card strong {
+      display: block;
+      font-size: 24px;
+      line-height: 1.1;
+    }
+    .card span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 12px 0 20px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: var(--panel);
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 80px minmax(160px, 1fr) 110px;
+      gap: 10px;
+      align-items: center;
+      margin: 8px 0;
+    }
+    .bar-label, .bar-value {
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .bar-track {
+      height: 18px;
+      border-radius: 4px;
+      background: #eef2f6;
+      overflow: hidden;
+      border: 1px solid var(--line);
+    }
+    .bar-fill {
+      height: 100%;
+    }
+    .level-1 { background: var(--level1); }
+    .level-2 { background: var(--level2); }
+    .level-3 { background: var(--level3); }
+    .warnings {
+      border: 1px solid #e4b35f;
+      background: #fff8ea;
+      border-radius: 8px;
+      padding: 14px 18px;
+    }
+    .warnings li {
+      margin: 5px 0;
+    }
+    .thumb-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    figure {
+      margin: 0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--panel);
+    }
+    img {
+      width: 100%;
+      aspect-ratio: 2 / 1;
+      object-fit: contain;
+      display: block;
+      background: #101820;
+    }
+    figcaption {
+      padding: 8px 10px 10px;
+      font-size: 12px;
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+    code {
+      background: #eef2f6;
+      padding: 2px 5px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <h1>BRAR Dataset And Split Report</h1>
+  <p>Static checkpoint report generated before model training. It verifies that the public BRAR release can support a leakage-aware image-level benchmark.</p>
+
+  <div class="cards">
+    <div class="card"><strong>988</strong><span>Manifest rows</span></div><div class="card"><strong>988</strong><span>Image files</span></div><div class="card"><strong>988</strong><span>Readable images</span></div><div class="card"><strong>0</strong><span>Exact duplicate hash groups</span></div><div class="card"><strong>20260606, 20260607, 20260608</strong><span>Split seeds</span></div><div class="card"><strong>5</strong><span>Folds per seed</span></div>
+  </div>
+
+  <h2>Class Distribution</h2>
+  
+            <div class="bar-row">
+              <div class="bar-label">Level 1</div>
+              <div class="bar-track"><div class="bar-fill level-1" style="width: 30.4%"></div></div>
+              <div class="bar-value">170 (17.2%)</div>
+            </div>
+            
+
+            <div class="bar-row">
+              <div class="bar-label">Level 2</div>
+              <div class="bar-track"><div class="bar-fill level-2" style="width: 100.0%"></div></div>
+              <div class="bar-value">560 (56.7%)</div>
+            </div>
+            
+
+            <div class="bar-row">
+              <div class="bar-label">Level 3</div>
+              <div class="bar-track"><div class="bar-fill level-3" style="width: 46.1%"></div></div>
+              <div class="bar-value">258 (26.1%)</div>
+            </div>
+            
+  <table><thead><tr><th>Level</th><th>Count</th></tr></thead><tbody><tr><td>1</td><td>170</td></tr><tr><td>2</td><td>560</td></tr><tr><td>3</td><td>258</td></tr></tbody></table>
+
+  <h2>Image Geometry</h2>
+  <table><thead><tr><th>Measure</th><th>N</th><th>Min</th><th>Mean</th><th>Max</th></tr></thead><tbody><tr><td>pixel width</td><td>988</td><td>2457</td><td>2817.1</td><td>2976</td></tr><tr><td>pixel height</td><td>988</td><td>1316</td><td>1356.5</td><td>1536</td></tr><tr><td>aspect ratio</td><td>988</td><td>1.867</td><td>2.081</td><td>2.126</td></tr></tbody></table>
+
+  <h2>Split Balance</h2>
+  <p>Each seed creates 5 fold groups. For a given fold, that fold is test, the next fold is validation, and the remaining three folds are training.</p>
+  <table><thead><tr><th>Split</th><th>Level</th><th>Min count</th><th>Mean count</th><th>Max count</th></tr></thead><tbody><tr><td>train</td><td>1</td><td>102</td><td>102</td><td>102</td></tr><tr><td>train</td><td>2</td><td>336</td><td>336</td><td>336</td></tr><tr><td>train</td><td>3</td><td>154</td><td>154.8</td><td>156</td></tr><tr><td>val</td><td>1</td><td>34</td><td>34</td><td>34</td></tr><tr><td>val</td><td>2</td><td>112</td><td>112</td><td>112</td></tr><tr><td>val</td><td>3</td><td>51</td><td>51.6</td><td>52</td></tr><tr><td>test</td><td>1</td><td>34</td><td>34</td><td>34</td></tr><tr><td>test</td><td>2</td><td>112</td><td>112</td><td>112</td></tr><tr><td>test</td><td>3</td><td>51</td><td>51.6</td><td>52</td></tr></tbody></table>
+
+  <h3>Representative Fold: Repeat 1, Fold 0</h3>
+  <table><thead><tr><th>Split</th><th>Level</th><th>Count</th></tr></thead><tbody><tr><td>train</td><td>1</td><td>102</td></tr><tr><td>train</td><td>2</td><td>336</td></tr><tr><td>train</td><td>3</td><td>154</td></tr><tr><td>val</td><td>1</td><td>34</td></tr><tr><td>val</td><td>2</td><td>112</td></tr><tr><td>val</td><td>3</td><td>52</td></tr><tr><td>test</td><td>1</td><td>34</td></tr><tr><td>test</td><td>2</td><td>112</td></tr><tr><td>test</td><td>3</td><td>52</td></tr></tbody></table>
+
+  <h2>Review Warnings</h2>
+  <ul class="warnings"><li>Class imbalance is material: largest class is 3.29 times the smallest class.</li><li>No separate patient_id is released; filename is the grouping key.</li><li>No tooth-level annotation table is released in the inspected ZIP.</li><li>Outcome-derived variables must stay out of predictors for Level.</li></ul>
+
+  <h2>Sample Images</h2>
+  
+            <section class="sample-section">
+              <h3>Level 1 Samples</h3>
+              <div class="thumb-grid">
+                <figure>
+                  <img src="../data/extracted/level_1/patient_image_000001_07f48740.jpg" alt="BRAR Level 1 sample">
+                  <figcaption>patient_image_000001_07f48740.jpg<br>Level 1 | 2976x1536</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_1/patient_image_000005_89a2810f.jpg" alt="BRAR Level 1 sample">
+                  <figcaption>patient_image_000005_89a2810f.jpg<br>Level 1 | 2976x1536</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_1/patient_image_000006_4aa37c68.jpg" alt="BRAR Level 1 sample">
+                  <figcaption>patient_image_000006_4aa37c68.jpg<br>Level 1 | 2795x1316</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_1/patient_image_000010_5ed86d8c.jpg" alt="BRAR Level 1 sample">
+                  <figcaption>patient_image_000010_5ed86d8c.jpg<br>Level 1 | 2976x1536</figcaption>
+                </figure>
+                </div>
+            </section>
+            
+
+            <section class="sample-section">
+              <h3>Level 2 Samples</h3>
+              <div class="thumb-grid">
+                <figure>
+                  <img src="../data/extracted/level_2/patient_image_000004_ba49da4c.jpg" alt="BRAR Level 2 sample">
+                  <figcaption>patient_image_000004_ba49da4c.jpg<br>Level 2 | 2976x1536</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_2/patient_image_000008_fdfc183f.jpg" alt="BRAR Level 2 sample">
+                  <figcaption>patient_image_000008_fdfc183f.jpg<br>Level 2 | 2796x1316</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_2/patient_image_000009_ea22106e.jpg" alt="BRAR Level 2 sample">
+                  <figcaption>patient_image_000009_ea22106e.jpg<br>Level 2 | 2786x1316</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_2/patient_image_000012_86f50079.jpg" alt="BRAR Level 2 sample">
+                  <figcaption>patient_image_000012_86f50079.jpg<br>Level 2 | 2976x1536</figcaption>
+                </figure>
+                </div>
+            </section>
+            
+
+            <section class="sample-section">
+              <h3>Level 3 Samples</h3>
+              <div class="thumb-grid">
+                <figure>
+                  <img src="../data/extracted/level_3/patient_image_000002_4bb31c71.jpg" alt="BRAR Level 3 sample">
+                  <figcaption>patient_image_000002_4bb31c71.jpg<br>Level 3 | 2786x1316</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_3/patient_image_000003_2b2e7506.jpg" alt="BRAR Level 3 sample">
+                  <figcaption>patient_image_000003_2b2e7506.jpg<br>Level 3 | 2796x1316</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_3/patient_image_000007_833861b5.jpg" alt="BRAR Level 3 sample">
+                  <figcaption>patient_image_000007_833861b5.jpg<br>Level 3 | 2775x1480</figcaption>
+                </figure>
+                
+                <figure>
+                  <img src="../data/extracted/level_3/patient_image_000013_306b0a74.jpg" alt="BRAR Level 3 sample">
+                  <figcaption>patient_image_000013_306b0a74.jpg<br>Level 3 | 2976x1536</figcaption>
+                </figure>
+                </div>
+            </section>
+            
+
+  <h2>Next Modeling Checkpoint</h2>
+  <p>The first model should be a frozen pretrained image encoder plus a class-balanced linear classifier. The primary model should use only image pixels and <code>severity_level</code>. Metadata and downstream dental-status variables should remain sensitivity analyses only.</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "c_grid": [
+    0.01,
+    0.1,
+    1.0,
+    10.0
+  ],
+  "device": "mps",
+  "embeddings_path": "data/processed/image_baseline/embeddings_resnet50_384x192.npz",
+  "encoder": "resnet50",
+  "folds_run": 15,
+  "image_height": 192,
+  "image_width": 384,
+  "prediction_rows": 5928
+}
