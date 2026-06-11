@@ -4,11 +4,18 @@ Date: 2026-06-09
 
 ## Recommendation
 
-**Proceed toward a benchmark manuscript outline, with the tile EfficientNet-B0 model as the primary image-only benchmark.**
+**Proceed toward a benchmark manuscript outline, with the tile EfficientNet-B0 model as the primary frozen-feature image-only benchmark.**
 
 The new analysis keeps the current claim boundary: this is a reproducible, leakage-aware, calibrated BRAR benchmark with metadata guardrails and a severe-grade secondary endpoint, not a clinical-grade deployment model.
 
 Uncertainty uses image-level out-of-fold bootstrap intervals after averaging each image's three test appearances. Severe-grade decisions use validation-selected thresholds only, then majority vote across the three held-out test appearances.
+
+Important framing caveats:
+
+- The inspected public full ZIP contains 988 linked images/metadata rows, although the source data descriptor describes a richer 1,104-patient cohort. The 988-image benchmark size reflects the inspected public release, not an investigator-applied exclusion.
+- The released `Level` target is a BRAR-derived age-dependent grade, not an independent clinical periodontitis-stage diagnosis.
+- The image-only models are frozen ImageNet feature extractors plus logistic regression. They are reproducible benchmark floors, not a ceiling for fine-tuned dental-radiograph models.
+- Macro-F1 is the primary three-class manuscript metric. Other paired metrics and subgroup rows are secondary or exploratory.
 
 ## Primary Table
 
@@ -27,7 +34,7 @@ Key reference points:
 
 - Tile EfficientNet-B0 CV macro-F1 `0.5329` and balanced accuracy `0.5399`.
 - Whole-image EfficientNet-B0 CV macro-F1 `0.4928` and balanced accuracy `0.5037`.
-- Age/sex guardrail CV macro-F1 `0.4850` and balanced accuracy `0.5445`.
+- Age/sex guardrail CV macro-F1 `0.4850` and balanced accuracy `0.5445`, which is numerically slightly higher than the tile model's CV balanced accuracy.
 - Tile severe-grade CV balanced accuracy `0.6309` and severe AUROC `0.6965`.
 
 ## Paired Image-Level Intervals
@@ -131,3 +138,6 @@ Top error cases:
 - Temperature scaling is fitted on validation folds only.
 - Severe-grade thresholds are fitted on validation folds only.
 - Metadata and downstream-status models remain guardrails or sensitivity analyses, not primary deployable models.
+- Image-level out-of-fold estimates average each image's three repeated test appearances, so they are repeat-aware benchmark summaries rather than single-shot deployment estimates.
+- Primary three-class manuscript metric: macro-F1.
+- Secondary/exploratory metrics: balanced accuracy, QWK, ordinal MAE, ECE, severe balanced accuracy, severe AUROC, paired deltas beyond the primary comparison, and subgroup rows.
