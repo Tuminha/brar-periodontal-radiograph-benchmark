@@ -1,0 +1,21 @@
+{
+  "augmentation_jitter": 0.05,
+  "design_rationale": "Single lightly fine-tuned CNN comparator using the same repeated train/validation/test splits as the frozen-feature benchmark. Classifier and final EfficientNet feature blocks are trainable; validation macro-F1 selects the epoch before held-out test evaluation.",
+  "device": "mps",
+  "dropout": 0.2,
+  "elapsed_seconds": 1652.276,
+  "encoder": "efficientnet_b0",
+  "epochs": 8,
+  "folds_run": 15,
+  "image_height": 192,
+  "image_width": 384,
+  "learning_rate": 0.0001,
+  "min_epochs": 3,
+  "model": "lightly_finetuned_cnn",
+  "patience": 3,
+  "prediction_rows": 5928,
+  "seed": 20260610,
+  "unfreeze_feature_blocks": 2,
+  "weight_decay": 0.0001,
+  "weights": "EfficientNet_B0_Weights.IMAGENET1K_V1"
+}

@@ -18,7 +18,7 @@
 <body>
 <main>
   <h1>BRAR Publication Uncertainty And Error Audit</h1>
-  <div class="callout">Tile EfficientNet-B0 remains the primary image-only benchmark. Intervals use image-level out-of-fold bootstrap resampling, not p-values.</div>
+  <div class="callout">Tile EfficientNet-B0 remains the primary image-only benchmark. The lightly fine-tuned comparator is whole-image, so it does not isolate fine-tuning from tiled representation or effective resolution. Intervals use image-level out-of-fold bootstrap resampling, not p-values.</div>
 
   <h2>Publication-Ready Model Table</h2>
   <table border="1" class="dataframe">
@@ -52,14 +52,27 @@
       <td>0.7099</td>
     </tr>
     <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>image_only</td>
+      <td>988</td>
+      <td>0.4850</td>
+      <td>0.0332</td>
+      <td>0.5041</td>
+      <td>0.4731</td>
+      <td>0.5351</td>
+      <td>0.5368</td>
+      <td>0.6554</td>
+      <td>0.7201</td>
+    </tr>
+    <tr>
       <td>Whole-image EfficientNet-B0</td>
       <td>image_only</td>
       <td>988</td>
       <td>0.4928</td>
       <td>0.0448</td>
       <td>0.5043</td>
-      <td>0.4694</td>
-      <td>0.5376</td>
+      <td>0.4698</td>
+      <td>0.5367</td>
       <td>0.5037</td>
       <td>0.6395</td>
       <td>0.7032</td>
@@ -71,8 +84,8 @@
       <td>0.4813</td>
       <td>0.0335</td>
       <td>0.5035</td>
-      <td>0.4699</td>
-      <td>0.5377</td>
+      <td>0.4685</td>
+      <td>0.5372</td>
       <td>0.4798</td>
       <td>0.6336</td>
       <td>0.6630</td>
@@ -84,8 +97,8 @@
       <td>0.4850</td>
       <td>0.0317</td>
       <td>0.4838</td>
-      <td>0.4534</td>
-      <td>0.5129</td>
+      <td>0.4537</td>
+      <td>0.5139</td>
       <td>0.5445</td>
       <td>0.5746</td>
       <td>0.5836</td>
@@ -97,8 +110,8 @@
       <td>0.4981</td>
       <td>0.0482</td>
       <td>0.5151</td>
-      <td>0.4806</td>
-      <td>0.5486</td>
+      <td>0.4819</td>
+      <td>0.5478</td>
       <td>0.5082</td>
       <td>0.6432</td>
       <td>0.7041</td>
@@ -110,8 +123,8 @@
       <td>0.4942</td>
       <td>0.0464</td>
       <td>0.5096</td>
-      <td>0.4755</td>
-      <td>0.5426</td>
+      <td>0.4759</td>
+      <td>0.5425</td>
       <td>0.5047</td>
       <td>0.6471</td>
       <td>0.6996</td>
@@ -123,8 +136,8 @@
       <td>0.5063</td>
       <td>0.0277</td>
       <td>0.5161</td>
-      <td>0.4851</td>
-      <td>0.5450</td>
+      <td>0.4855</td>
+      <td>0.5464</td>
       <td>0.5681</td>
       <td>0.5790</td>
       <td>0.6367</td>
@@ -498,6 +511,258 @@
       <td>-0.0326</td>
       <td>0.0431</td>
       <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Tile EfficientNet-B0</td>
+      <td>macro_f1</td>
+      <td>988</td>
+      <td>0.5041</td>
+      <td>0.5481</td>
+      <td>-0.0439</td>
+      <td>-0.0831</td>
+      <td>-0.0041</td>
+      <td>right_interval_better</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Tile EfficientNet-B0</td>
+      <td>balanced_accuracy</td>
+      <td>988</td>
+      <td>0.5550</td>
+      <td>0.5503</td>
+      <td>0.0048</td>
+      <td>-0.0374</td>
+      <td>0.0476</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Tile EfficientNet-B0</td>
+      <td>quadratic_weighted_kappa</td>
+      <td>988</td>
+      <td>0.3708</td>
+      <td>0.3997</td>
+      <td>-0.0289</td>
+      <td>-0.0939</td>
+      <td>0.0380</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Tile EfficientNet-B0</td>
+      <td>ordinal_mae</td>
+      <td>988</td>
+      <td>0.5476</td>
+      <td>0.4453</td>
+      <td>0.1022</td>
+      <td>0.0587</td>
+      <td>0.1468</td>
+      <td>right_interval_better</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Tile EfficientNet-B0</td>
+      <td>ece_10</td>
+      <td>988</td>
+      <td>0.0527</td>
+      <td>0.0497</td>
+      <td>0.0029</td>
+      <td>-0.0332</td>
+      <td>0.0422</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Tile EfficientNet-B0</td>
+      <td>severe_balanced_accuracy</td>
+      <td>988</td>
+      <td>0.6554</td>
+      <td>0.6371</td>
+      <td>0.0183</td>
+      <td>-0.0208</td>
+      <td>0.0594</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Tile EfficientNet-B0</td>
+      <td>severe_auroc</td>
+      <td>988</td>
+      <td>0.7201</td>
+      <td>0.7099</td>
+      <td>0.0102</td>
+      <td>-0.0282</td>
+      <td>0.0485</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Whole-image EfficientNet-B0</td>
+      <td>macro_f1</td>
+      <td>988</td>
+      <td>0.5041</td>
+      <td>0.5043</td>
+      <td>-0.0002</td>
+      <td>-0.0388</td>
+      <td>0.0391</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Whole-image EfficientNet-B0</td>
+      <td>balanced_accuracy</td>
+      <td>988</td>
+      <td>0.5550</td>
+      <td>0.5099</td>
+      <td>0.0451</td>
+      <td>0.0025</td>
+      <td>0.0877</td>
+      <td>left_interval_better</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Whole-image EfficientNet-B0</td>
+      <td>quadratic_weighted_kappa</td>
+      <td>988</td>
+      <td>0.3708</td>
+      <td>0.3666</td>
+      <td>0.0043</td>
+      <td>-0.0603</td>
+      <td>0.0691</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Whole-image EfficientNet-B0</td>
+      <td>ordinal_mae</td>
+      <td>988</td>
+      <td>0.5476</td>
+      <td>0.4909</td>
+      <td>0.0567</td>
+      <td>0.0141</td>
+      <td>0.1002</td>
+      <td>right_interval_better</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Whole-image EfficientNet-B0</td>
+      <td>ece_10</td>
+      <td>988</td>
+      <td>0.0527</td>
+      <td>0.0266</td>
+      <td>0.0261</td>
+      <td>-0.0180</td>
+      <td>0.0532</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Whole-image EfficientNet-B0</td>
+      <td>severe_balanced_accuracy</td>
+      <td>988</td>
+      <td>0.6554</td>
+      <td>0.6395</td>
+      <td>0.0159</td>
+      <td>-0.0233</td>
+      <td>0.0539</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Whole-image EfficientNet-B0</td>
+      <td>severe_auroc</td>
+      <td>988</td>
+      <td>0.7201</td>
+      <td>0.7032</td>
+      <td>0.0169</td>
+      <td>-0.0209</td>
+      <td>0.0541</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Age/sex guardrail</td>
+      <td>macro_f1</td>
+      <td>988</td>
+      <td>0.5041</td>
+      <td>0.4838</td>
+      <td>0.0204</td>
+      <td>-0.0155</td>
+      <td>0.0558</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Age/sex guardrail</td>
+      <td>balanced_accuracy</td>
+      <td>988</td>
+      <td>0.5550</td>
+      <td>0.5426</td>
+      <td>0.0124</td>
+      <td>-0.0265</td>
+      <td>0.0499</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Age/sex guardrail</td>
+      <td>quadratic_weighted_kappa</td>
+      <td>988</td>
+      <td>0.3708</td>
+      <td>0.2555</td>
+      <td>0.1153</td>
+      <td>0.0482</td>
+      <td>0.1784</td>
+      <td>left_interval_better</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Age/sex guardrail</td>
+      <td>ordinal_mae</td>
+      <td>988</td>
+      <td>0.5476</td>
+      <td>0.5850</td>
+      <td>-0.0374</td>
+      <td>-0.0810</td>
+      <td>0.0081</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Age/sex guardrail</td>
+      <td>ece_10</td>
+      <td>988</td>
+      <td>0.0527</td>
+      <td>0.0564</td>
+      <td>-0.0038</td>
+      <td>-0.0438</td>
+      <td>0.0347</td>
+      <td>overlaps_no_difference</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Age/sex guardrail</td>
+      <td>severe_balanced_accuracy</td>
+      <td>988</td>
+      <td>0.6554</td>
+      <td>0.5746</td>
+      <td>0.0808</td>
+      <td>0.0436</td>
+      <td>0.1198</td>
+      <td>left_interval_better</td>
+    </tr>
+    <tr>
+      <td>Lightly fine-tuned EfficientNet-B0</td>
+      <td>Age/sex guardrail</td>
+      <td>severe_auroc</td>
+      <td>988</td>
+      <td>0.7201</td>
+      <td>0.5836</td>
+      <td>0.1365</td>
+      <td>0.0947</td>
+      <td>0.1793</td>
+      <td>left_interval_better</td>
     </tr>
   </tbody>
 </table>

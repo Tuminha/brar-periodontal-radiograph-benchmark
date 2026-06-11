@@ -1,19 +1,20 @@
 # Severe-Grade Binary And Ordinal Analysis
 
-Date: 2026-06-08
+Date: 2026-06-11
 
 ## Recommendation
 
-**Use tile EfficientNet-B0 as the new leading image-only benchmark; keep metadata/downstream models as sensitivity analyses.**
+**Use tile EfficientNet-B0 as the leading three-class image benchmark; report the fine-tuned EfficientNet-B0 as the strongest image-only severe-endpoint point estimate.**
 
 The severe-grade endpoint is defined as BRAR Level 3 versus Levels 1-2. Thresholds are selected on validation folds only, then evaluated on held-out test folds. Metadata and downstream models remain guardrails or sensitivity analyses, not primary image models.
 
-Best severe-grade model by balanced accuracy: `image_plus_age_sex`. Best image-only severe-grade model: `image_tile_efficientnet_b0_meanmax`. Best ordinal three-class model by quadratic weighted kappa: `image_tile_efficientnet_b0_meanmax`.
+Best severe-grade model by balanced accuracy: `image_finetuned_efficientnet_b0`. Best image-only severe-grade model: `image_finetuned_efficientnet_b0`. Best ordinal three-class model by quadratic weighted kappa: `image_tile_efficientnet_b0_meanmax`.
 
 ## Severe-Grade Test Summary
 
 | model_id | kind | folds | balanced_accuracy_mean | sensitivity_mean | specificity_mean | f1_mean | auroc_mean | ece_10_mean |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| image_finetuned_efficientnet_b0 | image_only | 15 | 0.6497 | 0.6587 | 0.6406 | 0.4928 | 0.7069 | 0.0769 |
 | image_plus_age_sex | metadata_sensitivity | 15 | 0.6371 | 0.6367 | 0.6374 | 0.4771 | 0.6906 | 0.0831 |
 | image_plus_downstream_age_sex_upper_bound | upper_bound | 15 | 0.6365 | 0.6497 | 0.6233 | 0.4775 | 0.6872 | 0.0812 |
 | image_tile_efficientnet_b0_meanmax | image_only | 15 | 0.6309 | 0.5663 | 0.6954 | 0.4661 | 0.6965 | 0.0761 |
@@ -30,6 +31,7 @@ Best severe-grade model by balanced accuracy: `image_plus_age_sex`. Best image-o
 | image_tile_efficientnet_b0_meanmax | image_only | 15 | 0.5329 | 0.4649 | 0.0364 | 0.3824 | 0.6965 |
 | image_plus_age_sex | metadata_sensitivity | 15 | 0.4981 | 0.5044 | 0.0378 | 0.3520 | 0.6906 |
 | image_plus_downstream_age_sex_upper_bound | upper_bound | 15 | 0.4942 | 0.5085 | 0.0368 | 0.3514 | 0.6872 |
+| image_finetuned_efficientnet_b0 | image_only | 15 | 0.4850 | 0.5712 | 0.0644 | 0.3462 | 0.7069 |
 | image_efficientnet_b0 | image_only | 15 | 0.4928 | 0.5132 | 0.0405 | 0.3419 | 0.6911 |
 | downstream_plus_age_sex | upper_bound | 15 | 0.5063 | 0.5442 | 0.0840 | 0.3101 | 0.6367 |
 | image_resnet50 | image_only | 15 | 0.4813 | 0.5010 | 0.0445 | 0.2863 | 0.6506 |
@@ -54,6 +56,18 @@ Positive deltas favor the left model, except for log loss, ECE, ordinal MAE, and
 | image_tile_efficientnet_b0_meanmax | age_sex | sensitivity | 15 | 0.2603 | 0.1974 | 14 |
 | image_tile_efficientnet_b0_meanmax | age_sex | specificity | 15 | -0.1347 | 0.2086 | 2 |
 | image_tile_efficientnet_b0_meanmax | age_sex | auroc | 15 | 0.1111 | 0.0477 | 15 |
+| image_finetuned_efficientnet_b0 | image_tile_efficientnet_b0_meanmax | balanced_accuracy | 15 | 0.0188 | 0.0527 | 10 |
+| image_finetuned_efficientnet_b0 | image_tile_efficientnet_b0_meanmax | sensitivity | 15 | 0.0924 | 0.2239 | 11 |
+| image_finetuned_efficientnet_b0 | image_tile_efficientnet_b0_meanmax | specificity | 15 | -0.0548 | 0.2162 | 7 |
+| image_finetuned_efficientnet_b0 | image_tile_efficientnet_b0_meanmax | auroc | 15 | 0.0104 | 0.0452 | 10 |
+| image_finetuned_efficientnet_b0 | image_efficientnet_b0 | balanced_accuracy | 15 | 0.0217 | 0.0586 | 9 |
+| image_finetuned_efficientnet_b0 | image_efficientnet_b0 | sensitivity | 15 | 0.0283 | 0.1944 | 7 |
+| image_finetuned_efficientnet_b0 | image_efficientnet_b0 | specificity | 15 | 0.0151 | 0.1597 | 8 |
+| image_finetuned_efficientnet_b0 | image_efficientnet_b0 | auroc | 15 | 0.0158 | 0.0495 | 10 |
+| image_finetuned_efficientnet_b0 | age_sex | balanced_accuracy | 15 | 0.0816 | 0.0406 | 15 |
+| image_finetuned_efficientnet_b0 | age_sex | sensitivity | 15 | 0.3527 | 0.2653 | 14 |
+| image_finetuned_efficientnet_b0 | age_sex | specificity | 15 | -0.1895 | 0.2535 | 2 |
+| image_finetuned_efficientnet_b0 | age_sex | auroc | 15 | 0.1214 | 0.0570 | 15 |
 | image_plus_age_sex | age_sex | balanced_accuracy | 15 | 0.0690 | 0.0328 | 15 |
 | image_plus_age_sex | age_sex | sensitivity | 15 | 0.3307 | 0.2412 | 14 |
 | image_plus_age_sex | age_sex | specificity | 15 | -0.1927 | 0.2212 | 1 |

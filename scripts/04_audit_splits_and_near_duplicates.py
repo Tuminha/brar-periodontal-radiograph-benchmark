@@ -113,7 +113,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 def write_csv(path: Path, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -386,7 +386,7 @@ def summarize_split_balance(rows: list[dict[str, object]]) -> dict[str, object]:
 
 def package_versions() -> dict[str, str]:
     versions = {
-        "python_executable": sys.executable,
+        "python_executable": Path(sys.executable).name,
         "python_version": sys.version.replace("\n", " "),
         "platform": platform.platform(),
         "pillow": getattr(Image, "__version__", "unknown"),

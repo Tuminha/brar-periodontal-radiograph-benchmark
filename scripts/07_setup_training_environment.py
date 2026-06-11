@@ -114,7 +114,7 @@ def main() -> None:
     REPORTS.mkdir(parents=True, exist_ok=True)
     report = {
         "date": datetime.now().isoformat(timespec="seconds"),
-        "python_executable": sys.executable,
+        "python_executable": Path(sys.executable).name,
         "python_version": sys.version.replace("\n", " "),
         "platform": platform.platform(),
         "packages": {package: import_status(package) for package in REQUIRED_PACKAGES},

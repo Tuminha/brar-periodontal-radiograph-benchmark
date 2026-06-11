@@ -4,7 +4,7 @@ Date: 2026-06-07
 
 ## Runtime
 
-- Python executable: `/Users/francisco/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3`
+- Python executable: `python3`
 - Python version: `3.12.13 (main, Mar  3 2026, 15:35:03) [Clang 21.1.4 ]`
 - Platform: `macOS-26.4.1-arm64-arm-64bit`
 - Pillow: `12.2.0`

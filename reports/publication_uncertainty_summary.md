@@ -1,6 +1,6 @@
 # Publication Uncertainty And Error Audit
 
-Date: 2026-06-09
+Date: 2026-06-11
 
 ## Recommendation
 
@@ -14,7 +14,8 @@ Important framing caveats:
 
 - The inspected public full ZIP contains 988 linked images/metadata rows, although the source data descriptor describes a richer 1,104-patient cohort. The 988-image benchmark size reflects the inspected public release, not an investigator-applied exclusion.
 - The released `Level` target is a BRAR-derived age-dependent grade, not an independent clinical periodontitis-stage diagnosis.
-- The image-only models are frozen ImageNet feature extractors plus logistic regression. They are reproducible benchmark floors, not a ceiling for fine-tuned dental-radiograph models.
+- The primary tile/whole-image baselines are frozen ImageNet feature extractors plus logistic regression. A single lightly fine-tuned EfficientNet-B0 comparator contextualizes this floor, but it is not an architecture search or an externally validated clinical model.
+- Whole-image comparators use 384 x 192 aspect-fit inputs, while the leading tile model uses four 384 x 384 horizontal crops. The fine-tuned model is therefore a practical whole-image fine-tuning comparator, not a clean isolation of fine-tuning from representation or effective resolution.
 - Macro-F1 is the primary three-class manuscript metric. Other paired metrics and subgroup rows are secondary or exploratory.
 
 ## Primary Table
@@ -22,12 +23,13 @@ Important framing caveats:
 | model_label | kind | image_count | cv_macro_f1_mean | oof_macro_f1 | oof_macro_f1_low | oof_macro_f1_high | cv_balanced_accuracy_mean | oof_severe_balanced_accuracy | oof_severe_auroc |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Tile EfficientNet-B0 | image_only | 988 | 0.5329 | 0.5481 | 0.5136 | 0.5832 | 0.5399 | 0.6371 | 0.7099 |
-| Whole-image EfficientNet-B0 | image_only | 988 | 0.4928 | 0.5043 | 0.4694 | 0.5376 | 0.5037 | 0.6395 | 0.7032 |
-| Whole-image ResNet50 | image_only | 988 | 0.4813 | 0.5035 | 0.4699 | 0.5377 | 0.4798 | 0.6336 | 0.6630 |
-| Age/sex guardrail | metadata_guardrail | 988 | 0.4850 | 0.4838 | 0.4534 | 0.5129 | 0.5445 | 0.5746 | 0.5836 |
-| Image plus age/sex | metadata_sensitivity | 988 | 0.4981 | 0.5151 | 0.4806 | 0.5486 | 0.5082 | 0.6432 | 0.7041 |
-| Image plus downstream upper bound | upper_bound | 988 | 0.4942 | 0.5096 | 0.4755 | 0.5426 | 0.5047 | 0.6471 | 0.6996 |
-| Downstream plus age/sex upper bound | upper_bound | 988 | 0.5063 | 0.5161 | 0.4851 | 0.5450 | 0.5681 | 0.5790 | 0.6367 |
+| Lightly fine-tuned EfficientNet-B0 | image_only | 988 | 0.4850 | 0.5041 | 0.4731 | 0.5351 | 0.5368 | 0.6554 | 0.7201 |
+| Whole-image EfficientNet-B0 | image_only | 988 | 0.4928 | 0.5043 | 0.4698 | 0.5367 | 0.5037 | 0.6395 | 0.7032 |
+| Whole-image ResNet50 | image_only | 988 | 0.4813 | 0.5035 | 0.4685 | 0.5372 | 0.4798 | 0.6336 | 0.6630 |
+| Age/sex guardrail | metadata_guardrail | 988 | 0.4850 | 0.4838 | 0.4537 | 0.5139 | 0.5445 | 0.5746 | 0.5836 |
+| Image plus age/sex | metadata_sensitivity | 988 | 0.4981 | 0.5151 | 0.4819 | 0.5478 | 0.5082 | 0.6432 | 0.7041 |
+| Image plus downstream upper bound | upper_bound | 988 | 0.4942 | 0.5096 | 0.4759 | 0.5425 | 0.5047 | 0.6471 | 0.6996 |
+| Downstream plus age/sex upper bound | upper_bound | 988 | 0.5063 | 0.5161 | 0.4855 | 0.5464 | 0.5681 | 0.5790 | 0.6367 |
 | Majority class | baseline | 988 | 0.2412 | 0.2412 | 0.2412 | 0.2412 | 0.3333 | 0.5000 | 0.4972 |
 
 Key reference points:
@@ -36,10 +38,11 @@ Key reference points:
 - Whole-image EfficientNet-B0 CV macro-F1 `0.4928` and balanced accuracy `0.5037`.
 - Age/sex guardrail CV macro-F1 `0.4850` and balanced accuracy `0.5445`, which is numerically slightly higher than the tile model's CV balanced accuracy.
 - Tile severe-grade CV balanced accuracy `0.6309` and severe AUROC `0.6965`.
+- Lightly fine-tuned EfficientNet-B0 CV macro-F1 `0.4850` and severe AUROC `0.7069`; it contextualizes the frozen floor but does not replace the tile model as the primary macro-F1 benchmark; paired fine-tuned-minus-tile macro-F1 delta `-0.0439` (-0.0831 to -0.0041).
 
 ## Paired Image-Level Intervals
 
-Positive deltas favor the tile model except for ordinal MAE and ECE, where lower is better. These are interval estimates, not p-values.
+Positive deltas favor the left-hand model except for ordinal MAE and ECE, where lower is better. These are interval estimates, not p-values.
 
 | left_label | right_label | metric | delta_left_minus_right | delta_low | delta_high | interpretation |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -63,6 +66,21 @@ Positive deltas favor the tile model except for ordinal MAE and ECE, where lower
 | Tile EfficientNet-B0 | Image plus age/sex | quadratic_weighted_kappa | 0.0167 | -0.0464 | 0.0813 | overlaps_no_difference |
 | Tile EfficientNet-B0 | Image plus age/sex | severe_balanced_accuracy | -0.0061 | -0.0473 | 0.0347 | overlaps_no_difference |
 | Tile EfficientNet-B0 | Image plus age/sex | severe_auroc | 0.0058 | -0.0326 | 0.0431 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Tile EfficientNet-B0 | macro_f1 | -0.0439 | -0.0831 | -0.0041 | right_interval_better |
+| Lightly fine-tuned EfficientNet-B0 | Tile EfficientNet-B0 | balanced_accuracy | 0.0048 | -0.0374 | 0.0476 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Tile EfficientNet-B0 | quadratic_weighted_kappa | -0.0289 | -0.0939 | 0.0380 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Tile EfficientNet-B0 | severe_balanced_accuracy | 0.0183 | -0.0208 | 0.0594 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Tile EfficientNet-B0 | severe_auroc | 0.0102 | -0.0282 | 0.0485 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Whole-image EfficientNet-B0 | macro_f1 | -0.0002 | -0.0388 | 0.0391 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Whole-image EfficientNet-B0 | balanced_accuracy | 0.0451 | 0.0025 | 0.0877 | left_interval_better |
+| Lightly fine-tuned EfficientNet-B0 | Whole-image EfficientNet-B0 | quadratic_weighted_kappa | 0.0043 | -0.0603 | 0.0691 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Whole-image EfficientNet-B0 | severe_balanced_accuracy | 0.0159 | -0.0233 | 0.0539 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Whole-image EfficientNet-B0 | severe_auroc | 0.0169 | -0.0209 | 0.0541 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Age/sex guardrail | macro_f1 | 0.0204 | -0.0155 | 0.0558 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Age/sex guardrail | balanced_accuracy | 0.0124 | -0.0265 | 0.0499 | overlaps_no_difference |
+| Lightly fine-tuned EfficientNet-B0 | Age/sex guardrail | quadratic_weighted_kappa | 0.1153 | 0.0482 | 0.1784 | left_interval_better |
+| Lightly fine-tuned EfficientNet-B0 | Age/sex guardrail | severe_balanced_accuracy | 0.0808 | 0.0436 | 0.1198 | left_interval_better |
+| Lightly fine-tuned EfficientNet-B0 | Age/sex guardrail | severe_auroc | 0.1365 | 0.0947 | 0.1793 | left_interval_better |
 
 ## Subgroup Checks
 

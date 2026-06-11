@@ -50,6 +50,7 @@ CLASSES = ["1", "2", "3"]
 CLASS_TO_INDEX = {label: idx for idx, label in enumerate(CLASSES)}
 DISPLAY_ORDER = [
     "image_tile_efficientnet_b0_meanmax",
+    "image_finetuned_efficientnet_b0",
     "image_efficientnet_b0",
     "image_resnet50",
     "age_sex",
@@ -68,6 +69,9 @@ PAIRED_COMPARISONS = [
     ("image_tile_efficientnet_b0_meanmax", "age_sex"),
     ("image_tile_efficientnet_b0_meanmax", "image_resnet50"),
     ("image_tile_efficientnet_b0_meanmax", "image_plus_age_sex"),
+    ("image_finetuned_efficientnet_b0", "image_tile_efficientnet_b0_meanmax"),
+    ("image_finetuned_efficientnet_b0", "image_efficientnet_b0"),
+    ("image_finetuned_efficientnet_b0", "age_sex"),
 ]
 LOWER_IS_BETTER = {"ordinal_mae", "ece_10"}
 
@@ -79,6 +83,14 @@ PREDICTION_SPECS = [
         "temperature_scale": True,
         "kind": "image_only",
         "deployment_role": "primary tile image-only benchmark",
+    },
+    {
+        "model_id": "image_finetuned_efficientnet_b0",
+        "label": "Lightly fine-tuned EfficientNet-B0",
+        "path": IMAGE_DIR / "fine_tuned_efficientnet_b0_384x192_predictions.csv",
+        "temperature_scale": True,
+        "kind": "image_only",
+        "deployment_role": "single lightly fine-tuned same-split comparator",
     },
     {
         "model_id": "image_efficientnet_b0",
@@ -161,7 +173,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 def write_csv(path: Path, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -1098,7 +1110,7 @@ def build_error_audit(
     metadata = manifest[
         [
             "file_name",
-            "absolute_image_path",
+            "relative_image_path",
             "age",
             "gender",
             "number_of_missing_teeth",
@@ -1137,7 +1149,7 @@ def build_error_audit(
         wrong_conf = error_group["confidence"].astype(float)
         row = {
             "file_name": file_name,
-            "absolute_image_path": meta["absolute_image_path"],
+            "local_image_path": str(ROOT / str(meta["relative_image_path"])),
             "true_label_mode": true_counter.most_common(1)[0][0],
             "test_appearances": int(len(group)),
             "wrong_predictions": int(len(error_group)),
@@ -1224,7 +1236,7 @@ def render_contact_sheet(
         y0 = title_h + row_idx * panel_h
         draw.rectangle((x0 + 8, y0 + 8, x0 + panel_w - 8, y0 + panel_h - 8), fill=(255, 255, 255))
         try:
-            image = Image.open(str(row["absolute_image_path"]))
+            image = Image.open(str(row["local_image_path"]))
             image = ImageOps.exif_transpose(image).convert("RGB")
             image.thumbnail((panel_w - 28, 132))
             image_x = x0 + (panel_w - image.width) // 2
@@ -1272,6 +1284,13 @@ def build_contact_sheets(error_rows: list[dict[str, object]], limit: int) -> dic
     )
     render_contact_sheet(two_grade_errors, outputs["two_grade_errors"], "Tile model: two-grade errors", limit)
     return {key: str(path.relative_to(ROOT)) for key, path in outputs.items()}
+
+
+def public_error_rows(error_rows: list[dict[str, object]]) -> list[dict[str, object]]:
+    return [
+        {key: value for key, value in row.items() if key != "local_image_path"}
+        for row in error_rows
+    ]
 
 
 def model_table_markdown(rows: list[dict[str, object]]) -> str:
@@ -1340,13 +1359,41 @@ def render_markdown(
     tile = next(row for row in model_rows if row["model_id"] == "image_tile_efficientnet_b0_meanmax")
     whole = next(row for row in model_rows if row["model_id"] == "image_efficientnet_b0")
     age = next(row for row in model_rows if row["model_id"] == "age_sex")
+    finetuned = next(
+        (row for row in model_rows if row["model_id"] == "image_finetuned_efficientnet_b0"),
+        None,
+    )
+    finetuned_vs_tile_macro = next(
+        (
+            row
+            for row in paired_rows
+            if row["left_model"] == "image_finetuned_efficientnet_b0"
+            and row["right_model"] == "image_tile_efficientnet_b0_meanmax"
+            and row["metric"] == "macro_f1"
+        ),
+        None,
+    )
+    finetuned_delta_text = (
+        f"; paired fine-tuned-minus-tile macro-F1 delta `{format_float(finetuned_vs_tile_macro['delta_left_minus_right'])}` "
+        f"({format_float(finetuned_vs_tile_macro['delta_low'])} to {format_float(finetuned_vs_tile_macro['delta_high'])})"
+        if finetuned_vs_tile_macro is not None
+        else ""
+    )
+    finetuned_key_point = (
+        "\n"
+        f"- Lightly fine-tuned EfficientNet-B0 CV macro-F1 `{format_float(finetuned['cv_macro_f1_mean'])}` "
+        f"and severe AUROC `{format_float(finetuned['cv_severe_auroc_mean'])}`; it contextualizes the frozen floor "
+        f"but does not replace the tile model as the primary macro-F1 benchmark{finetuned_delta_text}."
+        if finetuned is not None
+        else ""
+    )
     subgroup_display = sorted(
         subgroup_rows,
         key=lambda row: (str(row["subgroup_type"]), str(row["subgroup"]), str(row["model_id"])),
     )[:30]
     return f"""# Publication Uncertainty And Error Audit
 
-Date: 2026-06-09
+Date: 2026-06-11
 
 ## Recommendation
 
@@ -1360,7 +1407,8 @@ Important framing caveats:
 
 - The inspected public full ZIP contains 988 linked images/metadata rows, although the source data descriptor describes a richer 1,104-patient cohort. The 988-image benchmark size reflects the inspected public release, not an investigator-applied exclusion.
 - The released `Level` target is a BRAR-derived age-dependent grade, not an independent clinical periodontitis-stage diagnosis.
-- The image-only models are frozen ImageNet feature extractors plus logistic regression. They are reproducible benchmark floors, not a ceiling for fine-tuned dental-radiograph models.
+- The primary tile/whole-image baselines are frozen ImageNet feature extractors plus logistic regression. A single lightly fine-tuned EfficientNet-B0 comparator contextualizes this floor, but it is not an architecture search or an externally validated clinical model.
+- Whole-image comparators use 384 x 192 aspect-fit inputs, while the leading tile model uses four 384 x 384 horizontal crops. The fine-tuned model is therefore a practical whole-image fine-tuning comparator, not a clean isolation of fine-tuning from representation or effective resolution.
 - Macro-F1 is the primary three-class manuscript metric. Other paired metrics and subgroup rows are secondary or exploratory.
 
 ## Primary Table
@@ -1372,11 +1420,11 @@ Key reference points:
 - Tile EfficientNet-B0 CV macro-F1 `{format_float(tile["cv_macro_f1_mean"])}` and balanced accuracy `{format_float(tile["cv_balanced_accuracy_mean"])}`.
 - Whole-image EfficientNet-B0 CV macro-F1 `{format_float(whole["cv_macro_f1_mean"])}` and balanced accuracy `{format_float(whole["cv_balanced_accuracy_mean"])}`.
 - Age/sex guardrail CV macro-F1 `{format_float(age["cv_macro_f1_mean"])}` and balanced accuracy `{format_float(age["cv_balanced_accuracy_mean"])}`, which is numerically slightly higher than the tile model's CV balanced accuracy.
-- Tile severe-grade CV balanced accuracy `{format_float(tile["cv_severe_balanced_accuracy_mean"])}` and severe AUROC `{format_float(tile["cv_severe_auroc_mean"])}`.
+- Tile severe-grade CV balanced accuracy `{format_float(tile["cv_severe_balanced_accuracy_mean"])}` and severe AUROC `{format_float(tile["cv_severe_auroc_mean"])}`.{finetuned_key_point}
 
 ## Paired Image-Level Intervals
 
-Positive deltas favor the tile model except for ordinal MAE and ECE, where lower is better. These are interval estimates, not p-values.
+Positive deltas favor the left-hand model except for ordinal MAE and ECE, where lower is better. These are interval estimates, not p-values.
 
 {paired_table_markdown(paired_rows)}
 
@@ -1506,7 +1554,7 @@ def render_html(
 <body>
 <main>
   <h1>BRAR Publication Uncertainty And Error Audit</h1>
-  <div class="callout">Tile EfficientNet-B0 remains the primary image-only benchmark. Intervals use image-level out-of-fold bootstrap resampling, not p-values.</div>
+  <div class="callout">Tile EfficientNet-B0 remains the primary image-only benchmark. The lightly fine-tuned comparator is whole-image, so it does not isolate fine-tuning from tiled representation or effective resolution. Intervals use image-level out-of-fold bootstrap resampling, not p-values.</div>
 
   <h2>Publication-Ready Model Table</h2>
   {dataframe_html(model_rows, model_cols)}
@@ -1602,6 +1650,7 @@ def main() -> None:
     )
     error_rows = build_error_audit(prob_frame, severe_frame, manifest)
     contact_sheets = build_contact_sheets(error_rows, args.contact_sheet_limit)
+    public_errors = public_error_rows(error_rows)
     validate_outputs(model_rows, contact_sheets)
 
     model_fieldnames = sorted({key for row in model_rows for key in row.keys()})
@@ -1609,7 +1658,6 @@ def main() -> None:
     subgroup_fieldnames = sorted({key for row in subgroup_rows for key in row.keys()})
     error_fieldnames = [
         "file_name",
-        "absolute_image_path",
         "true_label_mode",
         "test_appearances",
         "wrong_predictions",
@@ -1664,13 +1712,13 @@ def main() -> None:
     write_csv(OUTPUT_PAIRED_TABLE, paired_rows, paired_fieldnames)
     write_csv(OUTPUT_REPEAT_METRICS, repeat_metrics.to_dict("records"), repeat_fieldnames)
     write_csv(OUTPUT_SUBGROUP_METRICS, subgroup_rows, subgroup_fieldnames)
-    write_csv(OUTPUT_ERRORS, error_rows, error_fieldnames)
+    write_csv(OUTPUT_ERRORS, public_errors, error_fieldnames)
     OUTPUT_MD.write_text(
         render_markdown(
             model_rows,
             paired_rows,
             subgroup_rows,
-            error_rows,
+            public_errors,
             contact_sheets,
             args.bootstrap_iterations,
             args.confidence_level,
@@ -1678,7 +1726,7 @@ def main() -> None:
         encoding="utf-8",
     )
     OUTPUT_HTML.write_text(
-        render_html(model_rows, paired_rows, subgroup_rows, error_rows, contact_sheets),
+        render_html(model_rows, paired_rows, subgroup_rows, public_errors, contact_sheets),
         encoding="utf-8",
     )
     OUTPUT_JSON.write_text(
@@ -1690,7 +1738,7 @@ def main() -> None:
                 "model_table": model_rows,
                 "paired_intervals": paired_rows,
                 "subgroup_rows": subgroup_rows,
-                "tile_error_rows": error_rows,
+                "tile_error_rows": public_errors,
                 "contact_sheets": contact_sheets,
                 }
             ),

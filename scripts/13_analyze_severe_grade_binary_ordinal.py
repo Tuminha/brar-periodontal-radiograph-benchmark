@@ -70,6 +70,13 @@ PREDICTION_SPECS = [
         "deployment_role": "tile-based image-only baseline",
     },
     {
+        "model_id": "image_finetuned_efficientnet_b0",
+        "path": IMAGE_DIR / "fine_tuned_efficientnet_b0_384x192_predictions.csv",
+        "temperature_scale": True,
+        "kind": "image_only",
+        "deployment_role": "single lightly fine-tuned same-split comparator",
+    },
+    {
         "model_id": "image_plus_age_sex",
         "path": SENSITIVITY_DIR / "efficientnet_b0_384x192_sensitivity_predictions.csv",
         "temperature_scale": True,
@@ -120,7 +127,7 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 def write_csv(path: Path, rows: list[dict[str, object]], fieldnames: list[str]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 
@@ -417,6 +424,9 @@ def paired_deltas(binary_rows: list[dict[str, object]], ordinal_rows: list[dict[
         ("image_efficientnet_b0", "age_sex"),
         ("image_tile_efficientnet_b0_meanmax", "image_efficientnet_b0"),
         ("image_tile_efficientnet_b0_meanmax", "age_sex"),
+        ("image_finetuned_efficientnet_b0", "image_tile_efficientnet_b0_meanmax"),
+        ("image_finetuned_efficientnet_b0", "image_efficientnet_b0"),
+        ("image_finetuned_efficientnet_b0", "age_sex"),
         ("image_plus_age_sex", "age_sex"),
     ]
     binary_frame = pd.DataFrame(binary_rows)
@@ -514,14 +524,16 @@ def render_markdown(
     best_image = image_severe_rows[0] if image_severe_rows else {}
     best_ordinal = ordinal_rows[0] if ordinal_rows else {}
     recommendation = "Review severe-grade and ordinal model rankings before manuscript drafting"
-    if best_image and best_ordinal.get("model_id") == "image_tile_efficientnet_b0_meanmax":
-        recommendation = "Use tile EfficientNet-B0 as the new leading image-only benchmark"
+    if best_ordinal.get("model_id") == "image_tile_efficientnet_b0_meanmax":
+        recommendation = "Use tile EfficientNet-B0 as the leading three-class image benchmark"
+        if best_image.get("model_id") == "image_finetuned_efficientnet_b0":
+            recommendation += "; report the fine-tuned EfficientNet-B0 as the strongest image-only severe-endpoint point estimate"
     if best and best.get("kind") in {"metadata_sensitivity", "upper_bound"} and best_image:
         recommendation += "; keep metadata/downstream models as sensitivity analyses"
 
     return f"""# Severe-Grade Binary And Ordinal Analysis
 
-Date: 2026-06-08
+Date: 2026-06-11
 
 ## Recommendation
 
